@@ -12,9 +12,10 @@ Examples
 
 http://wc.dev/vat.php?country=ES&number=B63920920
 
-Parameters are passed via GET and both are mandatory, are:
+Parameters are passed via GET and both are mandatory:
 
 country: A valid European ISO country code.
+
 number: Vat number to request.
 
 Response
