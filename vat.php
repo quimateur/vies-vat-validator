@@ -24,10 +24,10 @@ class VatValidator
 	public $response;
 	protected $soap;
 	
-	// WSDL VIES Url Service
+	// WSDL VIES Url Service.
 	protected static $url_vies = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 	
-	// Valid european coutries code.
+	// Valid european countries ISO codes.
 	protected static $european_countries = array(
 		'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
 	);
