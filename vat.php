@@ -42,7 +42,7 @@ class VatValidator
 	 */
 	public function checkVat ( $country, $number )
 	{
-		$response = array( 'is_valid' => false );
+		$this->response = array( 'is_valid' => false );
 		$vat = $this->prepareVat( $country, $number );
 		if ($vat)
 		{
@@ -56,7 +56,7 @@ class VatValidator
 	*/
 	protected function prepareVat( $country, $number )
 	{
-	try
+		try
 		{
 			if ( empty( $country ) || empty( $number ) )
 			{
