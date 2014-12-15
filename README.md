@@ -10,7 +10,7 @@ It's inspired by: http://isvat.appspot.com/
 Examples
 -------------
 
-http://wc.dev/vat.php?country=ES&number=B63920920
+Call http://yourdomain.com/vat.php?country=ES&number=B63920920
 
 Parameters are passed via GET and both are mandatory:
 
