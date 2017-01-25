@@ -3,6 +3,7 @@ namespace Quimateur\ViesVatValidator\Tests;
 
 use \Quimateur\ViesVatValidator\VatValidator;
 use \Quimateur\ViesVatValidator\SoapClientFactoryInterface;
+use SoapFault;
 
 class FailingSoapFactory implements SoapClientFactoryInterface
 {
@@ -102,11 +103,22 @@ class VatValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($response['is_valid']);
     }
 
-    public function test_It_Works_If_Service_Unavailable()
+    public function test_It_Works_When_Service_Unavailable()
     {
         $validator = new VatValidator(new FailingSoapFactory());
         $response = $validator->checkVat('DE', 'NOT MATTERS');
         $this->assertEquals($response['error_message'], 'VAT Validation service not available');
+    }
+
+    public function test_It_Works_When_Call_To_Service_Fails()
+    {
+        $errorMsg = 'Terrible Error In Service';
+        $SoapClientMock = $this->getSoapClientMock();
+        $SoapClientMock->method('checkVat')->willThrowException(new \Exception($errorMsg));
+        $validator = new VatValidator(new MockSoapFactory($SoapClientMock));
+
+        $response = $validator->checkVat('DE', 'NOT MATTERS');
+        $this->assertEquals($response['error_message'], $errorMsg);
     }
 
 }

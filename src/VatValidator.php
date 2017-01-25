@@ -2,6 +2,9 @@
 
 namespace Quimateur\ViesVatValidator;
 
+require_once "SoapClientFactory.php";
+require_once "SoapClientFactoryInterface.php";
+
 /*
  * LICENSE
  *
@@ -98,8 +101,12 @@ class VatValidator
             'countryCode' => $country,
         );
 
-        $this->response = array('is_valid' => $soap->checkVat($vat)->valid);
-        return $this->response;
+        try {
+            $this->response = array('is_valid' => $soap->checkVat($vat)->valid);
+            return $this->response;
+        } catch (\Exception $e) {
+            return $this->generateErrorResponse($e->getMessage());
+        }
     }
 
     protected function generateErrorResponse($error)
@@ -108,10 +115,3 @@ class VatValidator
         return $this->response;
     }
 }
-
-// API Call
-//$vies = new VatValidator();
-//$vies->checkVat(strtoupper($_GET['country']), $_GET['number']);
-//$response = json_encode($vies->response());
-//echo $response;
-?>
