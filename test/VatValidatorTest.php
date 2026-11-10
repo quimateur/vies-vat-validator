@@ -41,12 +41,12 @@ class MockResponse
     }
 }
 
-class VatValidatorTest extends \PHPUnit_Framework_TestCase
+class VatValidatorTest extends \PHPUnit\Framework\TestCase
 {
     private function getSoapClientMock()
     {
-        return $this->getMockBuilder('StdClass')
-            ->setMethods(['checkVat'])
+        return $this->getMockBuilder('stdClass')
+            ->addMethods(['checkVat'])
             ->getMock();
     }
 

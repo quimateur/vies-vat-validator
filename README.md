@@ -1,9 +1,9 @@
 vies-vat-validator
 ==================
 
-Validates an Euopean VAT code against European Comission VIES Database
+Validates a European VAT number against the European Commission VIES service
 
-http://ec.europa.eu/taxation_customs/vies/faqvies.do#item_16
+https://ec.europa.eu/taxation_customs/vies/
 
 It's inspired by: http://isvat.appspot.com/
 
@@ -20,13 +20,13 @@ Call http://yourdomain.com/vat.php?country=ES&number=B63920920
 
 Parameters are passed via GET and both are mandatory:
 
-- country: A valid European ISO country code.
+- country: A country code as VIES expects it (note: Greece is `EL`, Northern Ireland is `XI`).
 - number: Vat number to request.
 
 You can also instantiate a VatValidator object to use it in your app: 
 
 $validator = new VatValidator();
-$validator->check('ES','1111111');
+$validator->checkVat('ES', 'B63920920');
 
 You'll need to require_once('VatValidator.php') or use an autoloader.
 

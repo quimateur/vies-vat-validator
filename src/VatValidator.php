@@ -29,14 +29,15 @@ class VatValidator
     protected $soap;
     protected $SOAPFactory;
 
-    public static $VIES_Service_WSDL_URL = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+    public static $VIES_Service_WSDL_URL = 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
     protected $WSDL_URL;
 
+    // Country codes as VIES expects them: Greece is EL, not GR, and XI is Northern Ireland
     protected static $valid_european_country_ISO_codes = array(
         'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK',
-        'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HU',
+        'EE', 'EL', 'ES', 'FI', 'FR', 'HR', 'HU',
         'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL',
-        'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+        'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'XI'
     );
 
     protected function getSoapClient()
@@ -54,7 +55,7 @@ class VatValidator
     }
 
     // We need to use a factory for SOAP objects to allow testing
-    public function __construct(SoapClientFactoryInterface $SOAPFactory = null)
+    public function __construct(?SoapClientFactoryInterface $SOAPFactory = null)
     {
         $this->SOAPFactory = $SOAPFactory ?: new SoapClientFactory();
     }

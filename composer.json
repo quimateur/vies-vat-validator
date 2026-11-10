@@ -1,11 +1,21 @@
 {
-  "name":	"quimateur-viesvatvalidator",
-  "require-dev": {
-    "phpunit/phpunit": "~5.7"
-  },
-  "autoload":	{
-    "psr-4":	{
-      "Quimateur\\ViesVatValidator\\":	"src/"
+    "name": "quimateur/vies-vat-validator",
+    "description": "Validates a European VAT number against the European Commission VIES service",
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.1",
+        "ext-soap": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Quimateur\\ViesVatValidator\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit test"
     }
-  }
 }
