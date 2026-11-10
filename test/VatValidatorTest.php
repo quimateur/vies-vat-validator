@@ -34,10 +34,14 @@ class MockResponse
 {
 
     public $valid;
+    public $name;
+    public $address;
 
-    public function __construct($response)
+    public function __construct($response, $name = '---', $address = '---')
     {
         $this->valid = $response;
+        $this->name = $name;
+        $this->address = $address;
     }
 }
 
@@ -101,6 +105,31 @@ class VatValidatorTest extends \PHPUnit\Framework\TestCase
         $validator = new VatValidator(new MockSoapFactory($SoapClientMock));
         $response = $validator->checkVat('ES', 'A_VAT_NUMBER');
         $this->assertFalse($response['is_valid']);
+    }
+
+    public function test_It_Returns_Company_Data_When_VIES_Provides_It()
+    {
+        $SoapClientMock = $this->getSoapClientMock();
+        $SoapClientMock->method('checkVat')
+            ->willReturn(new MockResponse(true, 'ACME LIMITED', "1 MAIN STREET\nDUBLIN 4"));
+
+        $validator = new VatValidator(new MockSoapFactory($SoapClientMock));
+        $response = $validator->checkVat('IE', 'A_VAT_NUMBER');
+
+        $this->assertTrue($response['is_valid']);
+        $this->assertEquals('ACME LIMITED', $response['name']);
+        $this->assertEquals("1 MAIN STREET\nDUBLIN 4", $response['address']);
+    }
+
+    public function test_It_Omits_Company_Data_When_Country_Does_Not_Share_It()
+    {
+        $SoapClientMock = $this->getSoapClientMock();
+        $SoapClientMock->method('checkVat')->willReturn(new MockResponse(true));
+
+        $validator = new VatValidator(new MockSoapFactory($SoapClientMock));
+        $response = $validator->checkVat('ES', 'A_VAT_NUMBER');
+
+        $this->assertEquals(array('is_valid' => true), $response);
     }
 
     public function test_It_Works_When_Service_Unavailable()

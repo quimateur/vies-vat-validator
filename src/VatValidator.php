@@ -103,11 +103,24 @@ class VatValidator
         );
 
         try {
-            $this->response = array('is_valid' => $soap->checkVat($vat)->valid);
-            return $this->response;
+            $result = $soap->checkVat($vat);
         } catch (\Exception $e) {
             return $this->generateErrorResponse($e->getMessage());
         }
+
+        $this->response = array('is_valid' => (bool) $result->valid);
+
+        // Some countries (e.g. Spain) don't share company data: VIES answers '---'
+        if ($this->response['is_valid']) {
+            foreach (array('name', 'address') as $field) {
+                $value = isset($result->$field) ? trim($result->$field) : '';
+                if ($value !== '' && $value !== '---') {
+                    $this->response[$field] = $value;
+                }
+            }
+        }
+
+        return $this->response;
     }
 
     protected function generateErrorResponse($error)

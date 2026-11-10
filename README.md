@@ -16,7 +16,7 @@ if you do not plan to allow access to the validator directly.
 Examples
 -------------
 
-Call http://yourdomain.com/vat.php?country=ES&number=B63920920
+Call http://yourdomain.com/vat.php?country=IE&number=6388047V
 
 Parameters are passed via GET and both are mandatory:
 
@@ -26,7 +26,7 @@ Parameters are passed via GET and both are mandatory:
 You can also instantiate a VatValidator object to use it in your app: 
 
 $validator = new VatValidator();
-$validator->checkVat('ES', 'B63920920');
+$validator->checkVat('IE', '6388047V');
 
 You'll need to require_once('VatValidator.php') or use an autoloader.
 
@@ -38,6 +38,18 @@ The output is a json object like:
 {
 	is_valid: true/false
 }
+
+When the number is valid and the country shares it, VIES also returns the company
+name and address, and they are added to the response:
+
+{
+	is_valid: true,
+	name: "GOOGLE IRELAND LIMITED",
+	address: "3RD FLOOR, GORDON HOUSE, BARROW STREET\nDUBLIN 4"
+}
+
+Some countries (Spain, for example) don't share this data, so `name` and `address`
+are only present when available. The address comes as a single text, as VIES gives it.
 
 
 Error logging
